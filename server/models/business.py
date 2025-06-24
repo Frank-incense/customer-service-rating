@@ -11,6 +11,7 @@ class Business(db.Model, SerializerMixin):
     slug = Column(String(), nullable=False)
     email = Column(String())
     logo_url = Column(String())
+    locations = Column(String())
     _password_hash = Column(String())
     createdAt = Column(DateTime(), server_default=func.now())
     updatedAt = Column(DateTime(), onupdate=func.now())
