@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from server.config import db 
+from server.models import User, Post, Business
 
 load_dotenv()
 
