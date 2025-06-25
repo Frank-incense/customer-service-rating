@@ -16,7 +16,9 @@ class Business(db.Model, SerializerMixin):
     createdAt = Column(DateTime(), server_default=func.now())
     updatedAt = Column(DateTime(), onupdate=func.now())
 
-    posts = relationship('Post', )
+    posts = relationship('Post', back_populates='business')
+
+    serialize_rules = ('-posts.business',)
 
     def __repr__(self):
         return f'Business: {self.id}, {self.slug}'

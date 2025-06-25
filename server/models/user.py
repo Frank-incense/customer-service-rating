@@ -16,6 +16,8 @@ class User(db.Model, SerializerMixin):
 
     posts = relationship('Post', back_populates='user')
 
+    serialize_rules = ('-posts.user',)
+
     def __repr__(self):
         return f'Business: {self.id}, {self.email}'
     

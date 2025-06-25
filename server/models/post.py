@@ -20,6 +20,9 @@ class Post(db.Model, SerializerMixin):
     user = relationship('User', back_populates='posts')
     business = relationship('Business', back_populates='posts')
 
+    serialize_rules = ('-user.posts', '-business.posts',)
+    # serialize_only = ('id', 'rating', 'comment', 'location', 'user_id', 'business_id', 'createdAt', 'updatedAt',)
+
     def __repr__(self):
         return f'Post: {self.id}, {self.rating}'
     

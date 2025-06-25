@@ -11,7 +11,7 @@ class Login(Resource):
             business = Business.query.filter_by(slug=data['slug']).first()
 
             if business and business.authenticate(data['password']):
-                token = create_access_token(identity=business.id)
+                token = create_access_token(identity=business.to_dict())
                 return make_response(jsonify(access=token), 200)
             
             return {'error': 'Incorrect login details'}, 401
@@ -19,7 +19,7 @@ class Login(Resource):
         user = User.query.filter_by(email=data.get('email')).first()
 
         if user and user.authenticate(data.get('password')):
-            token = create_access_token(identity=user.id)
+            token = create_access_token(identity=user.to_dict())
             return make_response(jsonify(access=token), 200)
         
         return {'error': 'Incorrect login details'}, 401
