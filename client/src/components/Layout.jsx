@@ -1,9 +1,13 @@
-import FixedNavbar from "./NavBar"
+import { useContext } from "react"
+import NavBar from "./Navbar"
+import { ThemeContext } from "./ThemeContextProvider"
 
 function Layout(){
-    return (
+    const {theme, toggleTheme}  = useContext(ThemeContext)
+    console.log(theme, toggleTheme)
+    return(
         <>
-            <FixedNavbar/>
+            <NavBar theme={theme} setTheme={toggleTheme}/>
         </>
     )
 }

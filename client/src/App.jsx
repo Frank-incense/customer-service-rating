@@ -1,13 +1,15 @@
-// import { useState } from 'react'
-import { RouterProvider } from 'react-router-dom'
-import './App.css'
-import { router } from './routes'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes';
+import ThemeContextProvider from './components/ThemeContextProvider';
 
 function App() {
-
+  
   return (
     <>
-      <RouterProvider router={router}/>
+      <ThemeContextProvider>
+        <RouterProvider router={router} />
+      </ThemeContextProvider>
     </>
   )
 }
