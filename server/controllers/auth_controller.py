@@ -20,7 +20,7 @@ class Login(Resource):
 
         if user and user.authenticate(data.get('password')):
             token = create_access_token(identity=user.to_dict())
-            return make_response(jsonify(access=token), 200)
+            return make_response(jsonify(access=token, user=user.to_dict()), 200)
         
         return {'error': 'Incorrect login details'}, 401
     
