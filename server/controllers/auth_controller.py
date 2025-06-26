@@ -27,7 +27,7 @@ class Login(Resource):
 class Register(Resource):
     def post(self):
         data = request.get_json()
-        
+        print(data)
         if data.get('slug'):
             business = Business(slug=data.get('slug'))
             
