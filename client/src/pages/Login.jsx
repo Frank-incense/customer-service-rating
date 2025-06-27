@@ -30,7 +30,7 @@ function Login(){
               }).then(
                 (res) => {
                 if (res.status == 200){
-                    return res.json(); // ✅ return here
+                    return res.json();
                 } else {
                     return res.json().then(err => { throw new Error(err.error) });
                 }

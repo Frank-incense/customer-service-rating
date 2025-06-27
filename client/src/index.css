@@ -1,0 +1,77 @@
+*{
+    box-sizing: border-box  ;
+    /* border: 1px solid; */
+}
+div.header{
+    text-align: center;
+    padding: 100px;
+    margin-bottom: 20px;
+}
+
+div.formGroup{
+    margin-top: 50px;
+}
+div.line {
+    border: 1px solid;
+    width: 90%;
+    opacity: 50%;
+    margin: auto;
+}
+div.sep{
+    border: 1px solid;
+    border-radius: 50px;
+    width: fit-content;
+    font-size: 1.2rem;
+    margin: 30px auto;
+    position: relative;
+    top: -46px;
+    z-index: 1;
+    background-color: white;
+}
+div.sep span{
+    margin: 25px;
+}
+div.categories ul{
+    text-decoration: none;
+    display: flex;
+    margin: 25px 0;
+    overflow: auto;
+    scrollbar-width: none;
+}
+li.category{
+    list-style: none;
+    text-decoration: none;
+    margin: 30px 20px;
+    min-width: fit-content;
+}
+
+div.cta{
+    text-align: center;
+    margin: 30px 0;
+    border-radius: 25px;
+    background-color: aliceblue;
+    padding: 20px;
+}
+
+div.cta h4{
+    padding: 15px 0 2px;
+}
+
+div.cta > button{
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+
+div.business_reviews{
+    margin: 45px 0;
+}
+
+div.review_head{
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid;
+}
+div.review_head h4{
+
+}
+/* Review page  styling */

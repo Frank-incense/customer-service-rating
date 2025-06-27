@@ -20,7 +20,7 @@ function NavBar({theme, setTheme}) {
             <Nav.Item>
                 <Nav.Link eventKey="link-2" href="/add-review">Add Review</Nav.Link>
             </Nav.Item>
-
+            <i class="bi bi-moon"></i>
             {true?
             <Nav variant='pills' className="d-flex">
                 <Nav.Link href="/login">Login</Nav.Link>
