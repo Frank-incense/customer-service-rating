@@ -1,6 +1,6 @@
 from server.config import db
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy import Column, Integer, String, DateTime,func
+from sqlalchemy import Column, Integer, String, DateTime, func, ForeignKey
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -13,12 +13,14 @@ class Business(db.Model, SerializerMixin):
     logo_url = Column(String())
     locations = Column(String())
     _password_hash = Column(String())
+    category_id = Column(Integer(), ForeignKey('categories.id'))
     createdAt = Column(DateTime(), server_default=func.now())
     updatedAt = Column(DateTime(), onupdate=func.now())
 
     posts = relationship('Post', back_populates='business')
+    category = relationship('Category', back_populates='businesses')
 
-    serialize_rules = ('-posts.business',)
+    serialize_rules = ('-posts.business', '-category.businesses',)
 
     def __repr__(self):
         return f'Business: {self.id}, {self.slug}'

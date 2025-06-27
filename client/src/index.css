@@ -2,11 +2,26 @@
     box-sizing: border-box  ;
     /* border: 1px solid; */
 }
+:root {
+  --primary: #f97316;
+  --secondary: #facc15;
+  --accent: #3b82f6;
+  --background: #f8fafc;
+  --text-color: #1f2937;
+  --border-color: #e5e7eb;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-color);
+  font-family: 'Nunito', sans-serif;
+}
+
 div.root{
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
 }
 main{
-    background-color: whitesmoke;
+    /* background-color: whitesmoke; */
 }
 div.header{
     text-align: center;
@@ -72,11 +87,16 @@ div.business_reviews{
     margin: 45px 0;
 }
 
+div.company_reviews{
+    margin-bottom: 20px;
+}
+
 div.review_head{
     justify-content: space-between;
     align-items: center;
     border: 1px solid;
 }
+
 div.review_ head h4{
 
 }
@@ -91,4 +111,38 @@ div.footer{
 
 div.offcanvas{
     border-radius:  0 20px 20px 0;
+}
+
+div.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0 20px 0;
+    border-top: 1px solid;
+}
+
+div.review{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+div.image{
+    width: 60px;
+    border-radius: 10px;
+}
+div.image img{
+    width: 50px;
+    margin: auto;
+}
+div.info {
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary);
+}
+div.rating_count{
+    display: inline;
+}
+div.company {
+    margin-left: 20px;
 }

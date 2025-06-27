@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 from flask_cors import CORS
 from server.config import db 
-from server.models import User, Post, Business
+from server.models import User, Post, Business, Category
 from server.controllers import addResource
 
 load_dotenv()

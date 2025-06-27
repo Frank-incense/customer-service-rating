@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
 function NavBar({theme, setTheme}) {
-    
     
   return (
     <Navbar bg={theme} data-bs-theme={theme} expand="lg" className="bg-body-tertiary">
@@ -32,8 +30,9 @@ function NavBar({theme, setTheme}) {
             
           </Nav>
         </Navbar.Collapse>
-          <i className="bi bi-moon"></i>
+        <i className="bi bi-moon"></i>
       </Container>
+      
     </Navbar>
   );
 }
