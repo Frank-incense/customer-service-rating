@@ -2,6 +2,12 @@
     box-sizing: border-box  ;
     /* border: 1px solid; */
 }
+div.root{
+    background-color: antiquewhite;
+}
+main{
+    background-color: whitesmoke;
+}
 div.header{
     text-align: center;
     padding: 100px;
@@ -71,7 +77,18 @@ div.review_head{
     align-items: center;
     border: 1px solid;
 }
-div.review_head h4{
+div.review_ head h4{
 
 }
 /* Review page  styling */
+
+div.footer{
+    border-top: 1px solid;
+    padding: 30px 20px;
+    justify-content: space-between;
+    align-content: center;
+}
+
+div.offcanvas{
+    border-radius:  0 20px 20px 0;
+}
