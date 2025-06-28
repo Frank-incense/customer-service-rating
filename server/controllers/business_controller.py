@@ -30,4 +30,29 @@ class BusinessController(Resource):
         new_business = Business(name=data['name'], user_id=user.id)
         new_business.save()
 
-        return make_response(jsonify(new_business.serialize()), 201)
+        return make_response(jsonify(new_business.to_dict()), 201)
+    
+class BusinessDetail(Resource):
+    
+    def get(self, slug):
+        business = Business.query.filter_by(slug=slug).first()
+        
+        if not business:
+            return make_response(jsonify({"message": "Business not found"}), 404)
+
+        print(business)
+        return make_response(jsonify(business.to_dict()), 200)
+
+    @jwt_required()
+    def patch(self, slug):
+        data = request.get_json()
+        business = Business.query.filter_by(slug=slug).first()
+        if not business:
+            return make_response(jsonify({"message": "Business not found"}), 404)
+
+        for key, value in data.items():
+            setattr(business, key, value)
+        
+        business.save()
+
+        return make_response(jsonify(business.to_dict()), 200)

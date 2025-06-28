@@ -21,11 +21,11 @@ const BusinessReview = () => {
   useEffect(() => {
     const fetchBusinessData = async () => {
       try {
-        const res = await fetch(`/api/businesses/${slug}`);
+        const res = await fetch(`/api/business/${slug}`);
         if (!res.ok) throw new Error("Failed to load business details");
         const data = await res.json();
-        setBusiness(data.business);
-        setReviews(data.reviews || []);
+        setBusiness(data);
+        setReviews(data.posts || []);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -35,7 +35,7 @@ const BusinessReview = () => {
 
     fetchBusinessData();
   }, [slug]);
-
+  console.log(business)
   const averageRating =
     reviews.length > 0
       ? (
@@ -62,21 +62,44 @@ const BusinessReview = () => {
           {/* Business Summary */}
           <Card className="mb-4 shadow-sm">
             <Card.Body>
-              <Card.Title className="fs-3">{business.name}</Card.Title>
-              <Card.Text>
-                Location: <strong>{business.location}</strong>
-              </Card.Text>
-              <Card.Text>
-                Total Reviews: <Badge bg="info">{reviews.length}</Badge>
-              </Card.Text>
-              <Card.Text>
-                Average Rating:{" "}
-                <Badge bg={averageRating >= 4 ? "success" : "warning"}>
-                  {averageRating}
-                </Badge>
-              </Card.Text>
+                <Row className="align-items-center">
+                {/* Business Logo */}
+                <Col xs={4} md={3} className="text-center">
+                    <img
+                    src={business.logo_url || "https://via.placeholder.com/100x100?text=Logo"}
+                    alt={`${business.slug} logo`}
+                    style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "fit",
+                        borderRadius: "8px",
+                        border: "1px solid #e5e7eb",
+                    }}
+                    />
+                </Col>
+
+                {/* Business Info */}
+                <Col xs={8} md={9}>
+                    <Card.Title className="fs-3 text-capitalize">
+                    {business.slug.replace(/-/g, " ")}
+                    </Card.Title>
+                    <Card.Text>
+                    Location: <strong>{business.locations}</strong>
+                    </Card.Text>
+                    <Card.Text>
+                    Total Reviews: <Badge bg="info">{reviews.length}</Badge>
+                    </Card.Text>
+                    <Card.Text>
+                    Average Rating:{" "}
+                    <Badge bg={averageRating >= 4 ? "success" : "warning"}>
+                        {averageRating}
+                    </Badge>
+                    </Card.Text>
+                </Col>
+                </Row>
             </Card.Body>
-          </Card>
+        </Card>
+
 
           {/* User Reviews */}
           <h4 className="mb-3">User Reviews</h4>
@@ -93,7 +116,7 @@ const BusinessReview = () => {
                     <Col md={8}>
                       <p className="mb-1 fw-bold">{review.comment}</p>
                       <small className="text-muted">
-                        Posted by: {review.username || "Anonymous"}
+                        Posted by: {review.user.email || "Anonymous"}
                       </small>
                     </Col>
                     <Col

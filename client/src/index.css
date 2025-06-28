@@ -17,12 +17,6 @@ body {
   font-family: 'Nunito', sans-serif;
 }
 
-div.root{
-    /* background-color: antiquewhite; */
-}
-main{
-    /* background-color: whitesmoke; */
-}
 div.header{
     text-align: center;
     padding: 100px;
@@ -95,10 +89,6 @@ div.review_head{
     justify-content: space-between;
     align-items: center;
     border: 1px solid;
-}
-
-div.review_ head h4{
-
 }
 
 div.review_body{

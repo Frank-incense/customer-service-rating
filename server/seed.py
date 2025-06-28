@@ -12,7 +12,7 @@ with app.app_context():
         'airtel': '/airtel-seeklogo.png',
         'carrefour': '/carrefour-seeklogo.png',
         'doubletree': '/doubletree-by-hilton-seeklogo.png',
-        'emirates': '/emirates-airline-seeklogo.png',
+        'emirates': '/emirates-airlines-seeklogo.png',
         'kfc': '/kfc-new-seeklogo.png',
         'equity': '/equity-bank-seeklogo.png',
         'm-pesa': '/mpesa-seeklogo.png',
@@ -27,7 +27,8 @@ with app.app_context():
         'standard-chartered': '/standard-chartered-bank-seeklogo.png',
         'standard-group': '/standard-group-plc-seeklogo.png',
         'quickmart-supermarket': '/quickmark-supermarket-seeklogo.png',
-
+        'turkish-airlines': '/turkish-airlines-seeklogo.png',
+        'i&m-bank': '/im-bank-seeklogo.png'
     }
 
     categories = ['Banking and Financial Services',
@@ -55,7 +56,7 @@ with app.app_context():
     db.session.add_all(users)
     db.session.commit()
 
-    businesses = [Business(slug=name, logo_url=logos[name]) for name in logos.keys()]
+    businesses = [Business(slug=name, logo_url=logos[name], category_id=fake.random_element(cats).id) for name in logos.keys()]
 
     db.session.add_all(businesses)
     db.session.commit()

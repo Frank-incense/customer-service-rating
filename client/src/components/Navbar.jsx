@@ -14,7 +14,7 @@ function NavBar({ theme, setTheme }) {
       className="bg-body-tertiary"
     >
       <Container>
-        <Navbar.Brand href="/">CSR-APP</Navbar.Brand>
+        <Navbar.Brand href="/">RateMate</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
