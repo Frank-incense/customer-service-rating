@@ -42,8 +42,10 @@ function HomePage(){
                     <h4>Business reviews</h4>
                     <button>See more</button>
                 </div>
-                <div className="review_body">
-
+                <div className="row review_body ">
+                    <div className="col">.g-col-6 .g-col-md-4</div>
+                    <div className="col">.g-col-6 .g-col-md-4</div>
+                    <div className="col">.g-col-6 .g-col-md-4</div>  
                 </div>
             </div>
             <div className="customer_reviews">
@@ -51,8 +53,10 @@ function HomePage(){
                     <span><h4>Recent reviews</h4></span>
                     <button>See more</button>
                 </div>
-                <div className="review_body">
-
+                <div className="grid review_body">
+                    <div className="col-6 col-md-4">.g-col-6 .g-col-md-4</div>
+                    <div className="col-6 col-md-4">.g-col-6 .g-col-md-4</div>
+                    <div className="col-6 col-md-4">.g-col-6 .g-col-md-4</div>
                 </div>
             </div>
         </main>

@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
 import ThemeContextProvider from './components/ThemeContextProvider';
 import AuthContextProvider from './components/AuthContextProvider';
-
+import './App.css'
 function App() {
   
   return (

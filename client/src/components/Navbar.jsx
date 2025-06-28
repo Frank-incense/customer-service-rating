@@ -1,41 +1,56 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar, Button } from "react-bootstrap";
+import { Moon, Sun } from "react-bootstrap-icons";
 
-function NavBar({theme, setTheme}) {
-    
+function NavBar({ theme, setTheme }) {
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
   return (
-    <Navbar bg={theme} data-bs-theme={theme} expand="lg" className="bg-body-tertiary">
+    <Navbar
+      bg={theme}
+      data-bs-theme={theme}
+      expand="lg"
+      className="bg-body-tertiary"
+    >
       <Container>
-        <Navbar.Brand href="#home">CSR-APP</Navbar.Brand>
+        <Navbar.Brand href="/">CSR-APP</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse className="justify-content-center" id="basic-navbar-nav">
-          <Nav >
-            <Nav.Item>
-                <Nav.Link href="/">Home</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link eventKey="link-1" href="/reviews">Reviews</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link eventKey="link-2" href="/add-review">Add Review</Nav.Link>
-            </Nav.Item>
-            
-            {true?
-            <Nav variant='pills' className="d-flex">
+        
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
+          <Nav className="me-auto">
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/reviews">Reviews</Nav.Link>
+            <Nav.Link href="/add-review">Add Review</Nav.Link>
+          </Nav>
+
+          <Nav className="align-items-center">
+            {/* Theme Toggle Button */}
+            <Button
+              variant={theme === "light" ? "outline-dark" : "outline-light"}
+              onClick={toggleTheme}
+              className="me-3"
+            >
+              {theme === "light" ? <Moon /> : <Sun />}{" "}
+              {theme === "light" ? "Dark Mode" : "Light Mode"}
+            </Button>
+
+            {/* Auth links (replace with real auth check later) */}
+            {true ? (
+              <>
                 <Nav.Link href="/login">Login</Nav.Link>
                 <Nav.Link href="/register">Sign Up</Nav.Link>
-            </Nav>:
-            <Navbar.Text>
-                    Signed in as: <a href="#login">Mark Otto</a>
-            </Navbar.Text>}
-            
+              </>
+            ) : (
+              <Navbar.Text>
+                Signed in as: <a href="#profile">Mark Otto</a>
+              </Navbar.Text>
+            )}
           </Nav>
         </Navbar.Collapse>
-        <i className="bi bi-moon"></i>
       </Container>
-      
     </Navbar>
   );
 }
 
 export default NavBar;
-

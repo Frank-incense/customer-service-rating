@@ -100,6 +100,14 @@ div.review_head{
 div.review_ head h4{
 
 }
+
+div.review_body{
+    overflow-x: auto;
+}
+
+div.review_body div{
+    border: 1px solid;
+}
 /* Review page  styling */
 
 div.footer{

@@ -21,6 +21,7 @@ class Business(db.Model, SerializerMixin):
     category = relationship('Category', back_populates='businesses')
 
     serialize_rules = ('-posts.business', '-category.businesses',)
+    serialize_only = ('id', 'slug', 'email', 'logo_url', 'locations', 'category_id', 'createdAt', 'updatedAt',)
 
     def __repr__(self):
         return f'Business: {self.id}, {self.slug}'

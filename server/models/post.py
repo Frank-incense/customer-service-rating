@@ -11,7 +11,7 @@ class Post(db.Model, SerializerMixin):
     id = Column(Integer(), primary_key=True)
     rating = Column(Float(), nullable=False)
     comment = Column(String(), nullable=False)
-    location = Column(Integer(), nullable=False)
+    location = Column(String(), nullable=False)
     user_id = Column(Integer(), ForeignKey('users.id', ondelete='CASCADE'))
     business_id = Column(Integer(), ForeignKey('businesses.id', ondelete='CASCADE'))
     createdAt = Column(DateTime(), server_default=func.now())

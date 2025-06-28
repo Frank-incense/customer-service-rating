@@ -65,7 +65,7 @@ with app.app_context():
         for _ in range(5):
             post = Post(
                 rating=fake.random_int(min=1, max=5),
-                content=fake.text(),
+                comment=fake.text(),
                 location=fake.city(),
                 business_id=business.id,
                 user_id=fake.random_element(users).id

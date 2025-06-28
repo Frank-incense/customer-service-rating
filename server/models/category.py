@@ -9,7 +9,7 @@ class Category(db.Model, SerializerMixin):
     id = Column(Integer(), primary_key=True)
     category = Column(String(), nullable=False)
 
-    businesses = relationship('Category', back_populates='category')
+    businesses = relationship('Business', back_populates='category')
 
     serialize_rules = ('-businesses.category',)
 

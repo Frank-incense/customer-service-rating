@@ -1,95 +1,174 @@
-import { Button, Container, Form } from "react-bootstrap";
-import { useFormik } from "formik";
-import * as yup from "yup";
+import { useState } from "react";
+import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-function Register(){
-  const formSchema = yup.object().shape({
-    email: yup.string().email("Invalid email").required("Must enter email"),
-    password: yup.string().required('Input your password'),
-  })
+const Register = () => {
+  const [registerError, setRegisterError] = useState(null);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
+  const navigate = useNavigate();
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password:"",
-    },
-    validationSchema: formSchema,
-    onSubmit: (values) => {
-          fetch("/api/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values, null, 2),
-          }).then(
-            (res) => {
-              if (res.status == 200){
-                console.log(res)
-                res.json()
-              }
-            }
-          )
-      },
-    });
+  const initialValues = {
+    role: "user",
+    email: "",
+    password: "",
+    slug: "",
+  };
 
-    return (
-        <Container>
-            <Container>
+  const validationSchema = Yup.object().shape({
+    role: Yup.string().oneOf(["user", "business"]).required(),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().min(6, "Minimum 6 characters").required("Password is required"),
+    slug: Yup.string().when("role", (role, schema) =>
+      role === "business"
+        ? schema.required("Business slug is required")
+        : schema.notRequired()
+    ),
+  });
 
-            </Container>
-            <Container>
-                <Form onSubmit={formik.handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control 
-                        name="email"
-                        type="email" 
-                        placeholder="Enter email"
-                        onChange={formik.handleChange}
-                        value={formik.values.email} />
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    setRegisterError(null);
+    setRegisterSuccess(false);
 
-                        <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                        </Form.Text>
+    const endpoint =
+      values.role === "business"
+        ? `/api/business/register`
+        : `/api/user/register`;
 
-                        {
-                        formik.touched.email?
-                        <Form.Text>{formik.errors.email}</Form.Text>
-                        :null
-                        }
-                    </Form.Group>
+    const payload =
+      values.role === "business"
+        ? {
+            email: values.email,
+            password: values.password,
+            slug: values.slug,
+          }
+        : {
+            email: values.email,
+            password: values.password,
+          };
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control 
-                        name="password"
-                        type="password" 
-                        placeholder="Password"
-                        onChange={formik.handleChange}
-                        value={formik.values.password} />
-                        {
-                          formik.touched.password?
-                          <Form.Text>{formik.errors.password}</Form.Text>
-                          :null
-                        }
-                        
-                    </Form.Group>
-                    
-                    <Button variant="primary" type="submit">
-                        Sign Up
-                    </Button>
-                </Form>
-            </Container>
-            <Container className="justify-content-center">
-                <h3>Are you a business?</h3>
-                <p>Set up a business account with us</p>
-                <Container className="d-flex">
-                    <Button variant="primary">Login</Button>
-                    <Button variant="outline-primary">Sign up</Button>
-                </Container>
-            </Container>
-        </Container>
-    );
-}
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-export default Register
+      if (!res.ok) throw new Error("Registration failed");
+
+      setRegisterSuccess(true);
+      resetForm();
+      setTimeout(() => navigate("/login"), 2000);
+    } catch (err) {
+      console.error(err);
+      setRegisterError("Registration failed. Please check your input.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <h2 className="text-center mb-4">Register</h2>
+
+          {registerError && <Alert variant="danger">{registerError}</Alert>}
+          {registerSuccess && (
+            <Alert variant="success">
+              Registration successful! Redirecting to login...
+            </Alert>
+          )}
+
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, values }) => (
+              <FormikForm>
+                {/* Role Selector */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Register as</Form.Label>
+                  <Field as="select" name="role" className="form-select">
+                    <option value="user">User</option>
+                    <option value="business">Business</option>
+                  </Field>
+                </Form.Group>
+
+                {/* Slug (business only) */}
+                {values.role === "business" && (
+                  <Form.Group className="mb-3">
+                    <Form.Label>Business Slug</Form.Label>
+                    <Field
+                      type="text"
+                      name="slug"
+                      className="form-control"
+                      placeholder="e.g. mama-grace-cafe"
+                    />
+                    <div className="text-danger small">
+                      <ErrorMessage name="slug" />
+                    </div>
+                  </Form.Group>
+                )}
+
+                {/* Email */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Email</Form.Label>
+                  <Field
+                    type="email"
+                    name="email"
+                    className="form-control"
+                  />
+                  <div className="text-danger small">
+                    <ErrorMessage name="email" />
+                  </div>
+                </Form.Group>
+
+                {/* Password */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Password</Form.Label>
+                  <Field
+                    type="password"
+                    name="password"
+                    className="form-control"
+                  />
+                  <div className="text-danger small">
+                    <ErrorMessage name="password" />
+                  </div>
+                </Form.Group>
+
+                <Button
+                  type="submit"
+                  variant="success"
+                  disabled={isSubmitting}
+                  className="w-100"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Spinner animation="border" size="sm" className="me-2" />
+                      Registering...
+                    </>
+                  ) : (
+                    "Register"
+                  )}
+                </Button>
+              </FormikForm>
+            )}
+          </Formik>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+
+export default Register;
