@@ -35,7 +35,7 @@ const BusinessReview = () => {
 
     fetchBusinessData();
   }, [slug]);
-  console.log(business)
+  
   const averageRating =
     reviews.length > 0
       ? (

@@ -10,9 +10,10 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const LoginPage = () => {
+  const {_, setIsAuth} = useOutletContext()
   const [loginError, setLoginError] = useState(null);
   const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ const LoginPage = () => {
     role: "user",
     email: "",
     password: "",
-    slug: "", // For business login
+    slug: "", 
   };
 
   const validationSchema = Yup.object().shape({
@@ -49,15 +50,17 @@ const LoginPage = () => {
           email: values.email,
           password: values.password,
         }),
+        credentials: "include"
       });
 
       if (!res.ok) throw new Error("Invalid credentials");
 
       const data = await res.json();
-      localStorage.setItem("token", data.access_token);
       localStorage.setItem("role", values.role);
+      localStorage.setItem("isAuth", data)
+      setIsAuth(data)
 
-      navigate(values.role === "business" ? "/dashboard" : "/reviews/user");
+      navigate(values.role === "business" ? "/dashboard" : "/user/profile");
     } catch (err) {
       console.error(err);
       setLoginError("Login failed. Check your credentials.");

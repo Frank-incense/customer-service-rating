@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {
@@ -10,20 +10,11 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import { AuthContext } from "../components/AuthContextProvider";
 
 const AddReviewPage = () => {
-  const [businesses, setBusinesses] = useState([]);
   const [submissionStatus, setSubmissionStatus] = useState(null);
-
-  useEffect(() => {
-    fetch("/api/business")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch businesses");
-        return res.json();
-      })
-      .then((data) => setBusinesses(data))
-      .catch((err) => console.error(err));
-  }, []);
+  const {businesses} = useContext(AuthContext);
 
   const initialValues = {
     business: "",
@@ -47,7 +38,7 @@ const AddReviewPage = () => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const res = await fetch(`/api/${values.business}/rate`, {
+      const res = await fetch(`/api/business`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

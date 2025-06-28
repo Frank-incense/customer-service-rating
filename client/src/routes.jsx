@@ -6,6 +6,8 @@ import HomePage from './pages/Home'
 import Review from './pages/Review'
 import AddReviewPage from './pages/AddReview'
 import BusinessReview from './pages/BusinessReview'
+import UserProfile from './pages/UserProfile'
+import BusinessDashboard from './pages/Dashboard'
 
 export const router = createBrowserRouter([
     {
@@ -17,8 +19,10 @@ export const router = createBrowserRouter([
             {path:'', element:<HomePage/>},
             {path:'reviews', element:<Review/>},
             {path:'reviews/:slug', element:<BusinessReview/>},
-            {path:'/add-review', element:<AddReviewPage/>}
-        ],
+            {path:'/add-review', element:<AddReviewPage/>},
+            {path:'user/profile',element:<UserProfile/>},
+            {path:'/dashboard', element:<BusinessDashboard/>}
+        ],  
         errorElement:<></>
     }
 ])

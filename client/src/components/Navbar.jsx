@@ -1,11 +1,14 @@
+import { useContext } from "react";
 import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import { Moon, Sun } from "react-bootstrap-icons";
+import { AuthContext } from "./AuthContextProvider";
+import { Link } from "react-router-dom";
 
 function NavBar({ theme, setTheme }) {
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
-
+  const {isAuth, } = useContext(AuthContext) 
   return (
     <Navbar
       bg={theme}
@@ -19,9 +22,9 @@ function NavBar({ theme, setTheme }) {
         
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/reviews">Reviews</Nav.Link>
-            <Nav.Link href="/add-review">Add Review</Nav.Link>
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/reviews">Reviews</Nav.Link>
+            <Nav.Link as={Link} to="/add-review">Add Review</Nav.Link>
           </Nav>
 
           <Nav className="align-items-center">
@@ -36,14 +39,14 @@ function NavBar({ theme, setTheme }) {
             </Button>
 
             {/* Auth links (replace with real auth check later) */}
-            {true ? (
+            {!isAuth ? (
               <>
-                <Nav.Link href="/login">Login</Nav.Link>
-                <Nav.Link href="/register">Sign Up</Nav.Link>
+                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <Nav.Link as={Link} to="/register">Sign Up</Nav.Link>
               </>
             ) : (
               <Navbar.Text>
-                Signed in as: <a href="#profile">Mark Otto</a>
+                Signed in as: <Link to="/user/profile">{isAuth.email}</Link>
               </Navbar.Text>
             )}
           </Nav>

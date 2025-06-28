@@ -12,7 +12,7 @@ from server.controllers import addResource
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 app.config.from_prefixed_env(prefix='FLASK')
 db.init_app(app=app)
 migrate = Migrate(app=app, db=db)

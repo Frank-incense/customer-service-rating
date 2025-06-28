@@ -1,4 +1,4 @@
-from flask_jwt_extended import create_access_token,  jwt_required
+from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required, set_access_cookies
 from flask import request, make_response, jsonify
 from flask_restful import Resource
 from server.models import User, Business
@@ -12,15 +12,19 @@ class Login(Resource):
 
             if business and business.authenticate(data['password']):
                 token = create_access_token(identity=business.to_dict())
-                return make_response(jsonify(access=token), 200)
-            
+                response = make_response(business.to_dict(), 200)
+                set_access_cookies(response, token)
+                return response
+
             return {'error': 'Incorrect login details'}, 401
         
         user = User.query.filter_by(email=data.get('email')).first()
 
         if user and user.authenticate(data.get('password')):
-            token = create_access_token(identity=user.to_dict())
-            return make_response(jsonify(access=token, user=user.to_dict()), 200)
+            token = create_access_token(identity=user.to_dict(), expires_delta=False)
+            response = make_response(user.to_dict(), 200)
+            set_access_cookies(response, token)
+            return response
         
         return {'error': 'Incorrect login details'}, 401
     
@@ -70,3 +74,21 @@ class Register(Resource):
         db.session.commit()
 
         return make_response(user.to_dict(), 201)
+
+class UserProfile(Resource):
+    @jwt_required()
+    def get(self):
+        user = get_jwt_identity()
+        print(user)
+        user = User.query.filter_by(id=user.get('id')).first()
+        
+        if not user:
+            return make_response(jsonify({"message": "User not found"}), 404)
+
+        return make_response(jsonify(user.to_dict()), 200)
+
+class Logout(Resource):
+    @jwt_required()
+    def post(self):
+        # Invalidate the token by not returning it
+        return make_response(jsonify({"message": "Logged out successfully"}), 200)

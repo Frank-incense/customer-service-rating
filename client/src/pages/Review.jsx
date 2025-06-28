@@ -1,33 +1,26 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Card, Spinner, Alert, InputGroup, Form, Button } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../components/AuthContextProvider";
 
 const Review = () => {
-    const [businesses, setBusinesses] = useState([]);
-    
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("all");
+    const {loading, businesses, error} = useContext(AuthContext)
+    const searchParams = new URLSearchParams(location.search);
+    const searchTerm = searchParams.get("search")? searchParams.get("search").toLowerCase(): ""
+    const [searchQuery, setSearchQuery] = useState(searchTerm);
+    const [selectedCategory, setSelectedCategory] = useState("All");
     const [filteredBusinesses, setFilteredBusinesses] = useState([]);
-    const categories = ['All','Banking and Financial Services',
-                        'Food & Beverage',
-                        'Retail & Shops',
-                        'Health & Wellness',
-                        'Telecommunication',
-                        'Transport and logistics',
-                        'Hotel & Hospitality']
-  useEffect(() => {
-    fetch("/api/business")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch businesses.");
-        return res.json();
-      })
-      .then((data) => setBusinesses(data))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+    const categories = [
+        'All',
+        'Banking and Financial Services',
+        'Food & Beverage',
+        'Retail & Shops',
+        'Health & Wellness',
+        'Telecommunication',
+        'Transport and logistics',
+        'Hotel & Hospitality']
+
 
   useEffect(() => {
     const filtered = businesses.filter((biz) => {
