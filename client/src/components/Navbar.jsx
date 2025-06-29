@@ -4,10 +4,8 @@ import { Moon, Sun } from "react-bootstrap-icons";
 import { AuthContext } from "./AuthContextProvider";
 import { Link } from "react-router-dom";
 
-function NavBar({ theme, setTheme }) {
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+function NavBar({ theme }) {
+  
   const {isAuth, } = useContext(AuthContext) 
   
   return (
@@ -29,15 +27,6 @@ function NavBar({ theme, setTheme }) {
           </Nav>
 
           <Nav className="align-items-center">
-            {/* Theme Toggle Button */}
-            <Button
-              variant={theme === "light" ? "outline-dark" : "outline-light"}
-              onClick={toggleTheme}
-              className="me-3"
-            >
-              {theme === "light" ? <Moon /> : <Sun />}{" "}
-              {theme === "light" ? "Dark Mode" : "Light Mode"}
-            </Button>
 
             {/* Auth links (replace with real auth check later) */}
             {!isAuth ? (

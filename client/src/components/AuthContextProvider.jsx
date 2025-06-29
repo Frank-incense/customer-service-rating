@@ -49,7 +49,7 @@ function AuthContextProvider({children}){
             setError("Failed to fetch user data");
           }
         };
-        console.log('fetching userdata')
+        
         fetchUser();
     }, []);
 

@@ -23,17 +23,19 @@ const UserProfile = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate()
 
-    const {isAuth, reviews, setIsAuth, logout} = useContext(AuthContext)
+    const {isAuth, reviews, setIsAuth, logout, getCookie} = useContext(AuthContext)
 
     const handleUpdate = async (values) => {
         setSaving(true);
         setError("");
 
         try {
-        const res = await fetch("/api/user/profile", {
+          const csrfToken = getCookie('csrf_access_token')
+        const res = await fetch("/api/register", {
             method: "PATCH",
             headers: {
             "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken
             },
             body: JSON.stringify(values),
             credentials: "include",
@@ -117,14 +119,14 @@ const UserProfile = () => {
                   <p>
                     <strong>Username:</strong> {isAuth.username || "N/A"}
                   </p>
-                  <>
+                  <div className="d-flex gap-3 mt-3">
                     <Button variant="danger" onClick={handleLogout}>
                         Logout
                     </Button>
                     <Button onClick={() => setEditMode(true)} variant="primary">
                         Edit Profile
                   </Button>
-                  </>
+                  </div>
                   
                 </>
               )}
@@ -146,10 +148,10 @@ const UserProfile = () => {
                         <div>
                           <p className="mb-1 fw-bold">{review.comment}</p>
                           <small className="text-muted">
-                            For: {review.business_name || review.business_slug}
+                            For: {review.business.slug}
                           </small>
                         </div>
-                        <Badge bg="primary" pill>
+                        <Badge bg="primary" className="d-flex justify-content-center align-items-center" pill>
                           ⭐ {review.rating}
                         </Badge>
                       </div>

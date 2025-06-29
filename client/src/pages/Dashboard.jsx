@@ -10,7 +10,7 @@ function BusinessDashboard() {
   const navigate = useNavigate()
   
   const isBusiness = localStorage.getItem('role') === "business"; 
-  console.log(isBusiness, isAuth)
+  
   useEffect(() => {
     if (isBusiness) {
       fetch(`/api/business/${isAuth.id}`, {
