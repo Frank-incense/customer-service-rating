@@ -1,6 +1,5 @@
 *{
     box-sizing: border-box  ;
-    /* border: 1px solid; */
 }
 :root {
   --primary: #f97316;
@@ -88,7 +87,6 @@ div.company_reviews{
 div.review_head{
     justify-content: space-between;
     align-items: center;
-    border: 1px solid;
 }
 
 div.review_body{

@@ -1,19 +1,19 @@
 // src/pages/BusinessDashboard.jsx
 import { useContext, useEffect, useState } from "react";
 import { Container, Card, Button, Row, Col, Badge } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/AuthContextProvider";
 
 function BusinessDashboard() {
-  const { isAuth } = useContext(AuthContext);
+  const { isAuth, logout } = useContext(AuthContext);
   const [stats, setStats] = useState(null);
-
-  const isBusiness = isAuth?.role === "business"; 
-
+  const navigate = useNavigate()
+  
+  const isBusiness = localStorage.getItem('role') === "business"; 
+  console.log(isBusiness, isAuth)
   useEffect(() => {
     if (isBusiness) {
-      fetch(`/api/business/${isAuth.slug}/stats`, {
-        credentials: "include",
+      fetch(`/api/business/${isAuth.id}`, {
       })
         .then((res) => res.json())
         .then((data) => setStats(data))
@@ -40,11 +40,32 @@ function BusinessDashboard() {
             <strong>Business Slug:</strong> {isAuth.slug}
           </Card.Text>
           <Card.Text>
-            <strong>Location:</strong> {isAuth.location}
+            <strong>Location:</strong> {isAuth.locations}
           </Card.Text>
-          <Button as={Link} to={`/reviews/${isAuth.slug}`} variant="warning">
-            View Public Reviews
-          </Button>
+          {isAuth.logo_url && (
+            <Image
+              src={isAuth.logo_url}
+              alt="Business Logo"
+              width={80}
+              className="my-2 d-block"
+              rounded
+              thumbnail
+            />
+          )}
+          <div className="d-flex gap-3 mt-3">
+            <Button as={Link} to={`/reviews/${isAuth.slug}`} variant="warning">
+              View Public Reviews
+            </Button>
+            <Button as={Link} to="/dashboard/edit" variant="outline-primary">
+              Edit Business Info
+            </Button>
+            <Button variant="danger" onClick={()=>{ 
+              logout()
+              navigate('/')
+              }}>
+              Logout
+            </Button>
+          </div>
         </Card.Body>
       </Card>
 

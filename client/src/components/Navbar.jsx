@@ -47,7 +47,7 @@ function NavBar({ theme, setTheme }) {
               </>
             ) : (
               <Navbar.Text>
-                Signed in as: <Link to="/user/profile">{isAuth.email}</Link>
+                Signed in as: <Link to={localStorage.getItem('role') === "user" ?"/user/profile":"/dashboard"}>{isAuth.email || isAuth.slug}</Link>
               </Navbar.Text>
             )}
           </Nav>

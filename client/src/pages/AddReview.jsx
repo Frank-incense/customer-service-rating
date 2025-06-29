@@ -14,7 +14,7 @@ import { AuthContext } from "../components/AuthContextProvider";
 
 const AddReviewPage = () => {
   const [submissionStatus, setSubmissionStatus] = useState(null);
-  const {businesses} = useContext(AuthContext);
+  const {businesses, getCookie} = useContext(AuthContext);
 
   const initialValues = {
     business: "",
@@ -38,10 +38,16 @@ const AddReviewPage = () => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const res = await fetch(`/api/business`, {
+      const csrfToken = getCookie('csrf_access_token')
+      const res = await fetch(`/api/posts`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json", 
+          "X-CSRF-TOKEN": csrfToken,
+         },
+         credentials: "include",
         body: JSON.stringify({
+          business: values.business,
           rating: values.rating,
           comment: values.comment,
           location: values.location,

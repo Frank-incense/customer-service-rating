@@ -41,15 +41,22 @@ const LoginPage = () => {
       values.role === "business"
         ? `/api/login`
         : "/api/login";
-
+    const value = 
+      values.role === 'business'
+        ? {
+          slug: values.slug,
+          email: values.email,
+          password: values.password,
+        }
+        : {
+          email: values.email,
+          password: values.password,
+        }
     try {
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
+        body: JSON.stringify(value),
         credentials: "include"
       });
 
@@ -59,6 +66,7 @@ const LoginPage = () => {
       localStorage.setItem("role", values.role);
       localStorage.setItem("isAuth", data)
       setIsAuth(data)
+      console.log(data)
 
       navigate(values.role === "business" ? "/dashboard" : "/user/profile");
     } catch (err) {

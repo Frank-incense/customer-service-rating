@@ -93,3 +93,4 @@ class Logout(Resource):
         response = make_response(jsonify({}), 204)
         unset_jwt_cookies(response)
         return response
+ 

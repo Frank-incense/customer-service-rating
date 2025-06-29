@@ -91,6 +91,18 @@ function HomePage(){
           {topThree.map((review) => (
             <div key={review.id} className="col-md-4 mb-3">
               <Card className="h-100 shadow-sm">
+                {review.business.logo_url && (
+                <Card.Img
+                    variant="top"
+                    src={review.business.logo_url}
+                    alt={`${review.business.slug} logo`}
+                    style={{
+                    height: "180px",
+                    objectFit: "fill",
+                    borderBottom: "1px solid #e5e7eb",
+                    }}
+                />
+                )}
                 <Card.Body>
                   <Card.Title>{review.business.slug.replace("-", " ")}</Card.Title>
                   <Card.Text>{review.comment}</Card.Text>

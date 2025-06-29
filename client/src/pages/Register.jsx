@@ -41,8 +41,8 @@ const Register = () => {
 
     const endpoint =
       values.role === "business"
-        ? `/api/business/register`
-        : `/api/user/register`;
+        ? `/api/register`
+        : `/api/register`;
 
     const payload =
       values.role === "business"

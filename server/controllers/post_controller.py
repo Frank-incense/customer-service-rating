@@ -17,12 +17,14 @@ class Posts(Resource):
     @jwt_required()
     def post(self):
         data = request.get_json()
+        
         business = Business.query.filter_by(slug=data.get('business')).first()
-
+        user = get_jwt_identity()
+        
         post = Post(rating=data.get('rating'), 
                     comment=data.get('comment'), 
                     location=data.get('location'),
-                    user_id=get_jwt_identity(),
+                    user_id=user['id'],
                     business_id=business.id)
         
         db.session.add(post)
