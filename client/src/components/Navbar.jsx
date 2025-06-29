@@ -9,6 +9,7 @@ function NavBar({ theme, setTheme }) {
     setTheme(theme === "light" ? "dark" : "light");
   };
   const {isAuth, } = useContext(AuthContext) 
+  
   return (
     <Navbar
       bg={theme}

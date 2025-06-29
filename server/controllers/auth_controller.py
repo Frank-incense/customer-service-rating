@@ -1,4 +1,4 @@
-from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required, set_access_cookies
+from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required, set_access_cookies, unset_jwt_cookies
 from flask import request, make_response, jsonify
 from flask_restful import Resource
 from server.models import User, Business
@@ -50,7 +50,7 @@ class Register(Resource):
 
         return make_response(user.to_dict(), 201)
     
-    @jwt_required()
+    @jwt_required(locations=['cookies'])
     def patch(self):
         data = request.get_json() 
 
@@ -76,10 +76,9 @@ class Register(Resource):
         return make_response(user.to_dict(), 201)
 
 class UserProfile(Resource):
-    @jwt_required()
+    @jwt_required(locations=['cookies'])
     def get(self):
         user = get_jwt_identity()
-        print(user)
         user = User.query.filter_by(id=user.get('id')).first()
         
         if not user:
@@ -88,7 +87,9 @@ class UserProfile(Resource):
         return make_response(jsonify(user.to_dict()), 200)
 
 class Logout(Resource):
-    @jwt_required()
+    @jwt_required(locations=['cookies'])
     def post(self):
-        # Invalidate the token by not returning it
-        return make_response(jsonify({"message": "Logged out successfully"}), 200)
+        print("Logging out user")
+        response = make_response(jsonify({}), 204)
+        unset_jwt_cookies(response)
+        return response

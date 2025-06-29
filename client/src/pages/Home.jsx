@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../components/AuthContextProvider";
 
 function HomePage(){
 
-    const [recentBusinessReviews, setBusinessReviews] = useState([]);
-    const [recentCustomerReviews, setCustomerReviews] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
+    const {posts} = useContext(AuthContext)
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -16,19 +16,12 @@ function HomePage(){
         }
     };
 
-    useEffect(() => {
-        fetch("/api/reviews/recent/business")
-        .then(res => res.json())
-        .then(data => setBusinessReviews(data));
-
-        fetch("/api/reviews/recent/user")
-        .then(res => res.json())
-        .then(data => setCustomerReviews(data));
-    }, []);
-
     const handleCategoryClick = (category) => {
         navigate(`/reviews?category=${encodeURIComponent(category)}`);
     };
+
+    const sortedReviews = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const topThree = sortedReviews.slice(0,3)
     
     return (
         <main className="container py-4">
@@ -95,14 +88,14 @@ function HomePage(){
           <Button as={Link} to="/reviews" variant="outline-primary">See more</Button>
         </div>
         <div className="row">
-          {recentBusinessReviews.map((review) => (
+          {topThree.map((review) => (
             <div key={review.id} className="col-md-4 mb-3">
               <Card className="h-100 shadow-sm">
                 <Card.Body>
-                  <Card.Title>{review.business_slug.replace("-", " ")}</Card.Title>
+                  <Card.Title>{review.business.slug.replace("-", " ")}</Card.Title>
                   <Card.Text>{review.comment}</Card.Text>
                   <Card.Text><strong>Rating:</strong> {review.rating}</Card.Text>
-                  <Link to={`/reviews/${review.business_slug}`}>View Business</Link>
+                  <Link to={`/reviews/${review.business.slug}`}>View Business</Link>
                 </Card.Body>
               </Card>
             </div>
@@ -116,11 +109,11 @@ function HomePage(){
           <Button as={Link} to="/reviews/user" variant="outline-primary">See more</Button>
         </div>
         <div className="row">
-          {recentCustomerReviews.map((review) => (
+          {topThree.map((review) => (
             <div key={review.id} className="col-md-4 mb-3">
               <Card className="h-100 shadow-sm">
                 <Card.Body>
-                  <Card.Title>{review.business_slug.replace("-", " ")}</Card.Title>
+                  <Card.Title>{review.user.email}</Card.Title>
                   <Card.Text>{review.comment}</Card.Text>
                   <Card.Text><strong>Rating:</strong> {review.rating}</Card.Text>
                 </Card.Body>

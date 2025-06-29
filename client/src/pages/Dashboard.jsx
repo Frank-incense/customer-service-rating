@@ -5,23 +5,23 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../components/AuthContextProvider";
 
 function BusinessDashboard() {
-  const { user } = useContext(AuthContext);
+  const { isAuth } = useContext(AuthContext);
   const [stats, setStats] = useState(null);
 
-  const isBusiness = user?.role === "business"; 
+  const isBusiness = isAuth?.role === "business"; 
 
   useEffect(() => {
     if (isBusiness) {
-      fetch(`/api/business/${user.slug}/stats`, {
+      fetch(`/api/business/${isAuth.slug}/stats`, {
         credentials: "include",
       })
         .then((res) => res.json())
         .then((data) => setStats(data))
         .catch(() => setStats(null));
     }
-  }, [user, isBusiness]);
+  }, [isAuth, isBusiness]);
 
-  if (!user || !isBusiness) {
+  if (!isAuth || !isBusiness) {
     return (
       <Container className="py-5">
         <h4>Unauthorized – You must be a business user to access this page.</h4>
@@ -35,14 +35,14 @@ function BusinessDashboard() {
 
       <Card className="mb-4 shadow-sm">
         <Card.Body>
-          <Card.Title className="fs-4">Welcome, {user.email}</Card.Title>
+          <Card.Title className="fs-4">Welcome, {isAuth.email}</Card.Title>
           <Card.Text>
-            <strong>Business Slug:</strong> {user.slug}
+            <strong>Business Slug:</strong> {isAuth.slug}
           </Card.Text>
           <Card.Text>
-            <strong>Location:</strong> {user.location}
+            <strong>Location:</strong> {isAuth.location}
           </Card.Text>
-          <Button as={Link} to={`/reviews/${user.slug}`} variant="warning">
+          <Button as={Link} to={`/reviews/${isAuth.slug}`} variant="warning">
             View Public Reviews
           </Button>
         </Card.Body>

@@ -14,41 +14,48 @@ import {
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../components/AuthContextProvider";
+import { useNavigate } from "react-router-dom";
 
 
 const UserProfile = () => {
-  const [editMode, setEditMode] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
+    const [editMode, setEditMode] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState("");
+    const navigate = useNavigate()
 
-  const {isAuth, reviews, setIsAuth} = useContext(AuthContext)
-  console.log(isAuth)
-  const handleUpdate = async (values) => {
-    setSaving(true);
-    setError("");
+    const {isAuth, reviews, setIsAuth, logout} = useContext(AuthContext)
 
-    try {
-      const res = await fetch("/api/user/profile", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-        credentials: "include",
-      });
+    const handleUpdate = async (values) => {
+        setSaving(true);
+        setError("");
 
-      if (!res.ok) throw new Error("Update failed");
+        try {
+        const res = await fetch("/api/user/profile", {
+            method: "PATCH",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(values),
+            credentials: "include",
+        });
 
-      const updatedUser = await res.json();
-      setIsAuth(updatedUser);
-      setEditMode(false);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to update profile");
-    } finally {
-      setSaving(false);
-    }
-  };
+        if (!res.ok) throw new Error("Update failed");
+
+        const updatedUser = await res.json();
+        setIsAuth(updatedUser);
+        setEditMode(false);
+        } catch (err) {
+        console.error(err);
+        setError("Failed to update profile");
+        } finally {
+        setSaving(false);
+        }
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/')
+    };
 
   return (
     <Container className="mt-5">
@@ -110,9 +117,15 @@ const UserProfile = () => {
                   <p>
                     <strong>Username:</strong> {isAuth.username || "N/A"}
                   </p>
-                  <Button onClick={() => setEditMode(true)} variant="primary">
-                    Edit Profile
+                  <>
+                    <Button variant="danger" onClick={handleLogout}>
+                        Logout
+                    </Button>
+                    <Button onClick={() => setEditMode(true)} variant="primary">
+                        Edit Profile
                   </Button>
+                  </>
+                  
                 </>
               )}
             </Card.Body>

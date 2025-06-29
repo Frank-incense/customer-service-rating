@@ -4,7 +4,7 @@ from flask_restful import Resource
 from server.models import Post, Business
 from server.config import db
 
-class Post(Resource):
+class Posts(Resource):
 
     def get(self):
         posts = Post.query.all()
