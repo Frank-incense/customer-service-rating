@@ -33,6 +33,7 @@ class Register(Resource):
         data = request.get_json()
         print(data)
         if data.get('slug'):
+            
             business = Business(slug=data.get('slug'))
             
             business.password_hash = data.get('password')
@@ -65,8 +66,9 @@ class Register(Resource):
 
             return make_response(business.to_dict(), 201)
         
-        user = User.query.filter_by(email=data.get('email')).first()
-            
+        user = get_jwt_identity()
+        user = User.query.filter_by(id=user.get('id')).first()
+        print(user)
         for attr in data:
             setattr(user, attr, data[attr])
 
