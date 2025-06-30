@@ -40,7 +40,7 @@ function AuthContextProvider({children}){
               credentials: "include"
             });
             const data = await res.json();
-            if (!data.msg){
+            if (data.email){
                 setIsAuth(data);
                 setReviews(data.posts || []);
             }
